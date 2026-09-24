@@ -63,7 +63,8 @@ gftp --git https://github.com/sabbir28/gftp.git --ftp /htdocs --dry-run</code></
                         <tr>
                             <td><code>gftp init</code></td>
                             <td><code>--preset</code>, <code>--host</code>, <code>--user</code>, <code>--pass</code>,
-                                <code>--port</code>, <code>--remote-dir</code>, <code>--git</code></td>
+                                <code>--port</code>, <code>--remote-dir</code>, <code>--git</code>
+                            </td>
                             <td>Initializes <code>.gftp/config</code> in current folder with credentials or preset</td>
                         </tr>
                         <tr>
@@ -84,9 +85,14 @@ gftp --git https://github.com/sabbir28/gftp.git --ftp /htdocs --dry-run</code></
                         </tr>
                         <tr>
                             <td><code>gftp push</code> / <code>gftp sync</code></td>
-                            <td><code>--git &lt;url&gt;</code>, <code>--ftp &lt;dir&gt;</code>, <code>--dry-run</code>,
-                                <code>--force</code>, <code>--all</code></td>
+                            <td><code>--git &lt;url&gt;</code>, <code>--ftp &lt;dir&gt;</code>, <code>--clean</code>,
+                                <code>--dry-run</code>, <code>--force</code>, <code>--all</code></td>
                             <td>Uploads pending modified/added files, handles deletions, updates remote SHA state</td>
+                        </tr>
+                        <tr>
+                            <td><code>gftp clean-remote</code></td>
+                            <td><code>--force</code> / <code>-y</code></td>
+                            <td>Recursively wipes all remote files and subdirectories from target FTP server path</td>
                         </tr>
                         <tr>
                             <td><code>gftp log</code></td>

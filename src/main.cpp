@@ -38,9 +38,12 @@ void printUsage() {
     std::cout << "  " << UI::CYAN << "push" << UI::RESET << "       Execute differential FTP synchronization\n";
     std::cout << "              Options: --git <url> (Auto clone/fetch git project before sync)\n";
     std::cout << "                       --ftp <dir> (Override remote FTP destination directory)\n";
+    std::cout << "                       --clean (Wipe remote directory before syncing)\n";
     std::cout << "                       --dry-run (Preview without uploading)\n";
     std::cout << "                       --all / --force (Upload all tracked files regardless of SHA)\n";
     std::cout << "  " << UI::CYAN << "sync" << UI::RESET << "       Alias for 'push'\n";
+    std::cout << "  " << UI::CYAN << "clean-remote" << UI::RESET << " Recursively wipe all remote files and subfolders under FTP path\n";
+    std::cout << "              Options: --force / -y (Skip confirmation prompt)\n";
     std::cout << "  " << UI::CYAN << "log" << UI::RESET << "        View sync history\n";
     std::cout << "  " << UI::CYAN << "version" << UI::RESET << "    Display version & build information\n";
     std::cout << "  " << UI::CYAN << "help" << UI::RESET << "       Show this help message\n\n";
@@ -154,6 +157,42 @@ int main(int argc, char* argv[]) {
     // Handle --git <url> cloning if requested
     if (!gitUrl.empty()) {
         GitEngine::cloneOrFetchRepo(gitUrl);
+    }
+
+    // Command: clean-remote / clean
+    if (cmd == "clean-remote" || cmd == "clean") {
+        UI::printBanner();
+        UI::printWarning("=== DANGER: REMOTE FTP DIRECTORY WIPE ===");
+        UI::printInfo("Target Server: " + cfg.user + "@" + cfg.host + ":" + std::to_string(cfg.port));
+        UI::printInfo("Remote Path:   " + cfg.remote_dir);
+
+        bool force = (std::find(args.begin(), args.end(), "--force") != args.end() || std::find(args.begin(), args.end(), "-y") != args.end());
+        if (!force) {
+            std::cout << UI::RED << "\nAre you sure you want to PERMANENTLY DELETE ALL REMOTE FILES in " << cfg.remote_dir << "? (y/N): " << UI::RESET;
+            std::string confirm;
+            std::cin >> confirm;
+            if (confirm != "y" && confirm != "Y" && confirm != "yes") {
+                UI::printInfo("Remote directory wipe cancelled by user.");
+                return 0;
+            }
+        }
+
+        FtpClient ftp;
+        if (!ftp.connect(cfg.host, cfg.port, cfg.user, cfg.pass, cfg.passive)) {
+            UI::printError("FTP Connection failed: " + ftp.getLastErrorStr());
+            return 1;
+        }
+
+        UI::printInfo("Wiping remote directory: " + cfg.remote_dir + "...");
+        if (ftp.cleanRemoteDirectory(cfg.remote_dir)) {
+            ftp.deleteFile(cfg.remote_dir + "/.gftp_state");
+            UI::printSuccess("Successfully wiped all remote files and directories!");
+        } else {
+            UI::printError("Failed to clean remote directory.");
+        }
+
+        ftp.disconnect();
+        return 0;
     }
 
     // Command: config

@@ -23,6 +23,8 @@ public:
 
     bool uploadFile(const std::string& localPath, const std::string& remotePath, ProgressCallback progressCb = nullptr);
     bool deleteFile(const std::string& remotePath);
+    bool removeDirectory(const std::string& remoteDir);
+    bool cleanRemoteDirectory(const std::string& remoteDir);
 
     // Remote commit state tracking (.gftp_state on server)
     std::string getRemoteState(const std::string& remoteStateFilename = ".gftp_state");

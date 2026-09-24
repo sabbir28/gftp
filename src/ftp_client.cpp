@@ -204,6 +204,52 @@ bool FtpClient::deleteFile(const std::string& remotePath) {
     return FtpDeleteFileA(hConnect, remotePath.c_str()) == TRUE;
 }
 
+bool FtpClient::removeDirectory(const std::string& remoteDir) {
+    if (!hConnect) return false;
+    return FtpRemoveDirectoryA(hConnect, remoteDir.c_str()) == TRUE;
+}
+
+bool FtpClient::cleanRemoteDirectory(const std::string& remoteDir) {
+    if (!hConnect) return false;
+
+    WIN32_FIND_DATAA findData;
+    std::string searchPath = remoteDir.empty() ? "*.*" : (remoteDir + "/*.*");
+
+    HINTERNET hFind = FtpFindFirstFileA(hConnect, searchPath.c_str(), &findData, INTERNET_FLAG_RELOAD, 0);
+    if (!hFind) {
+        return true;
+    }
+
+    std::vector<std::string> subFiles;
+    std::vector<std::string> subDirs;
+
+    do {
+        std::string name = findData.cFileName;
+        if (name == "." || name == "..") continue;
+
+        std::string fullPath = remoteDir.empty() ? name : (remoteDir + "/" + name);
+
+        if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            subDirs.push_back(fullPath);
+        } else {
+            subFiles.push_back(fullPath);
+        }
+    } while (InternetFindNextFileA(hFind, &findData));
+
+    InternetCloseHandle(hFind);
+
+    for (const auto& file : subFiles) {
+        deleteFile(file);
+    }
+
+    for (const auto& dir : subDirs) {
+        cleanRemoteDirectory(dir);
+        removeDirectory(dir);
+    }
+
+    return true;
+}
+
 std::string FtpClient::getRemoteState(const std::string& remoteStateFilename) {
     if (!hConnect) return "";
 

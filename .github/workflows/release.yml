@@ -89,4 +89,4 @@ jobs:
           Attached: `${zipName}`
           "@
 
-          gh release create "$tagName" "$zipName" --target main --title "gftp $tagName" --notes "$releaseNotes" --clobber
+          gh release create "$tagName" "$zipName" --target main --title "gftp $tagName" --notes "$releaseNotes"
