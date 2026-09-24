@@ -67,38 +67,48 @@ jobs:
           echo "ZIP_NAME=${zipName}" >> $env:GITHUB_ENV
           Compress-Archive -Path gftp.exe, README.md, CHANGELOG.md -DestinationPath $zipName
 
-      - name: Create Git Tag and Publish GitHub Release
+      - name: Publish GitHub Release (Every 10 Builds or Version Tags)
         shell: powershell
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          $runNumber = [int]"${{ github.run_number }}"
+          $isTag = "${{ github.ref_type }}" -eq "tag"
+          $isModulo10 = ($runNumber % 10 -eq 0)
           $tagName = "${env:TAG_NAME}"
           $zipName = "${env:ZIP_NAME}"
-          
-          # Configure Git user & update tag
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag $tagName -f
-          git push origin $tagName -f
 
-          $releaseNotes = @"
-          # gftp Release ${tagName}
-          
-          Automated build release for **gftp** (Git-Aware FTP Differential Sync CLI for Windows).
-          
-          ### Package Contents:
-          - `gftp.exe` (Standalone Windows C++ binary)
-          - `README.md` (CLI Usage Guide & Manual)
-          - `CHANGELOG.md` (Complete Git Commit History)
-          
-          ### Key Features:
-          - Direct Remote Git Cloning & Auto Push (`gftp --git <url> --ftp <dir>`).
-          - Remote FTP Directory Wipe Engine (`gftp clean-remote`).
-          - Fast differential sync using Git commit history & SHA tracking (`.gftp_state`).
-          - Native Windows WinINet API execution with 0 external DLL dependencies.
-          
-          ### Download Binary Package:
-          Attached: `${zipName}`
-          "@
+          if ($isTag -or $isModulo10 -or "${{ github.event_name }}" -eq "workflow_dispatch") {
+              echo "Publishing stable release $tagName (Run #$runNumber)..."
 
-          gh release create "$tagName" "$zipName" --target main --title "gftp $tagName" --notes "$releaseNotes"
+              # Configure Git user & update tag
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+              git tag $tagName -f
+              git push origin $tagName -f
+
+              $releaseNotes = @"
+              # gftp Release ${tagName}
+              
+              Automated stable build release for **gftp** (Git-Aware FTP Differential Sync CLI for Windows).
+              
+              ### Package Contents:
+              - `gftp.exe` (Standalone Windows C++ binary)
+              - `README.md` (CLI Usage Guide & Manual)
+              - `CHANGELOG.md` (Complete Git Commit History)
+              
+              ### Key Features:
+              - Direct Remote Git Cloning & Auto Push (`gftp --git <url> --ftp <dir>`).
+              - Remote FTP Directory Wipe Engine (`gftp clean-remote`).
+              - Fast differential sync using Git commit history & SHA tracking (`.gftp_state`).
+              - Single-line in-place overall progress bar rendering.
+              - Native Windows WinINet API execution with 0 external DLL dependencies.
+              
+              ### Official Documentation Portal:
+              - https://sabbir28.github.io/gftp/
+              "@
+
+              gh release create "$tagName" "$zipName" --target main --title "gftp $tagName" --notes "$releaseNotes"
+          } else {
+              echo "Build check passed! Skipping GitHub Release creation for run #$runNumber. (Stable releases publish every 10th commit run or version tag pushes)."
+          }
