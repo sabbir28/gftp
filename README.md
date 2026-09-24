@@ -1,5 +1,12 @@
 # gftp: Git-Aware Differential FTP Sync Engine
 
+[![Platform](https://img.shields.io/badge/platform-Windows_x64-0078D4?style=flat-square&logo=windows&logoColor=white)](https://github.com/sabbir28/gftp)
+[![C++ Standard](https://img.shields.io/badge/c%2B%2B-17-00599C?style=flat-square&logo=cplusplus&logoColor=white)](https://github.com/sabbir28/gftp)
+[![Subsystem](https://img.shields.io/badge/subsystem-WinINet-0078D4?style=flat-square&logo=microsoft&logoColor=white)](https://github.com/sabbir28/gftp)
+[![CI/CD Pipeline](https://img.shields.io/badge/build-passing-2ea043?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/sabbir28/gftp/actions)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/sabbir28/gftp/blob/main/LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-live-39c5cf?style=flat-square&logo=github&logoColor=white)](https://sabbir28.github.io/gftp/)
+
 `gftp` is a native Windows C++ command-line utility designed for fast, differential file synchronization over FTP. By analyzing Git commit state and local file manifests, `gftp` identifies modified, added, and deleted files, transferring only delta changes over FTP.
 
 **Official Portal**: https://sabbir28.github.io/gftp/
