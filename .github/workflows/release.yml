@@ -14,19 +14,28 @@ jobs:
     permissions:
       contents: write
 
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up MinGW GCC Toolchain
-        uses: egor-trefilov/setup-mingw@v2
+      - name: Set up MSYS2 MinGW-w64 GCC Toolchain
+        uses: msys2/setup-msys2@v2
         with:
-          version: '12.2.0'
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-make
 
       - name: Generate Build Version Number
         id: versioning
+        shell: powershell
         run: |
           $runNumber = "${{ github.run_number }}"
           $buildVer = "1.0.${runNumber}"
@@ -37,26 +46,28 @@ jobs:
 
       - name: Compile gftp.exe with Dynamic Build Number
         run: |
-          g++ -O3 -std=c++17 -Wall -I. -DGFTP_BUILD_NUMBER="\"v${env:BUILD_VER}\"" src/*.cpp -o gftp.exe -lwininet -lshlwapi
+          g++ -O3 -std=c++17 -Wall -I. -DGFTP_BUILD_NUMBER="\"v${BUILD_VER}\"" src/*.cpp -o gftp.exe -lwininet -lshlwapi
 
       - name: Verify Binary Version Output
         run: |
-          .\gftp.exe version
+          ./gftp.exe version
 
       - name: Package Release ZIP Archive
+        shell: powershell
         run: |
           $zipName = "gftp-${env:TAG_NAME}-windows-x64.zip"
           echo "ZIP_NAME=${zipName}" >> $env:GITHUB_ENV
           Compress-Archive -Path gftp.exe, README.md, Makefile, CMakeLists.txt -DestinationPath $zipName
 
       - name: Create Git Tag and Publish GitHub Release
+        shell: powershell
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $tagName = "${env:TAG_NAME}"
           $zipName = "${env:ZIP_NAME}"
           
-          # Create and push git tag
+          # Configure Git user & update tag
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag $tagName -f
