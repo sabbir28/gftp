@@ -49,24 +49,33 @@ jobs:
           echo "ZIP_NAME=${zipName}" >> $env:GITHUB_ENV
           Compress-Archive -Path gftp.exe, README.md, Makefile, CMakeLists.txt -DestinationPath $zipName
 
-      - name: Create GitHub Release and Upload Artifact
+      - name: Create Git Tag and Publish GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          $tagName = "${env:TAG_NAME}"
+          $zipName = "${env:ZIP_NAME}"
+          
+          # Create and push git tag
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag $tagName -f
+          git push origin $tagName -f
+
           $releaseNotes = @"
-          # gftp Release ${env:TAG_NAME}
+          # gftp Release ${tagName}
           
           Automated build release for **gftp** (Git-Aware FTP Differential Sync CLI for Windows).
           
-          ### What's Included:
+          ### Features Included:
+          - Direct Remote Git Cloning & Auto Push (`gftp --git <url> --ftp <dir>`).
           - Fast differential sync using Git commit history & SHA tracking.
-          - Built-in target configuration preset options.
+          - Built-in target configuration preset options (`ftpupload.net` / `mseet_42012618`).
           - Native Windows WinINet API execution with 0 external DLL dependencies.
-          - Real-time ANSI colored terminal interface with transfer speed metrics.
+          - Clean multi-page documentation site with vector SVG icons.
           
-          ### Checksum / Binary Asset:
-          Attached: `${env:ZIP_NAME}`
+          ### Download Binary:
+          Attached: `${zipName}`
           "@
 
-          # Delete existing draft tag if re-running on main, then publish release
-          gh release create "${env:TAG_NAME}" "${env:ZIP_NAME}" --title "gftp ${env:TAG_NAME}" --notes "$releaseNotes" --generate-notes
+          gh release create "$tagName" "$zipName" --target main --title "gftp $tagName" --notes "$releaseNotes" --clobber

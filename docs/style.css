@@ -37,7 +37,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: rgba(22, 27, 34, 0.85);
+    background-color: rgba(22, 27, 34, 0.95);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -55,8 +55,8 @@ body {
 .brand {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #fff;
-    text-decoration: none;
+    color: #fff !important;
+    text-decoration: none !important;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -83,14 +83,14 @@ body {
 
 .nav-links a {
     color: var(--text-muted);
-    text-decoration: none;
+    text-decoration: none !important;
     font-weight: 500;
     transition: color 0.2s;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: var(--accent-cyan);
+    color: var(--accent-cyan) !important;
 }
 
 .github-btn {
@@ -103,6 +103,7 @@ body {
     border-radius: var(--radius);
     border: 1px solid var(--border);
     transition: all 0.2s;
+    text-decoration: none !important;
 }
 
 .github-btn:hover {
@@ -160,14 +161,14 @@ body {
     font-size: 1rem;
     font-weight: 600;
     border-radius: var(--radius);
-    text-decoration: none;
+    text-decoration: none !important;
     transition: all 0.2s;
     display: inline-block;
 }
 
 .btn-primary {
     background-color: #238636;
-    color: #fff;
+    color: #fff !important;
 }
 
 .btn-primary:hover {
@@ -177,7 +178,7 @@ body {
 
 .btn-secondary {
     background-color: var(--bg-tertiary);
-    color: var(--text-main);
+    color: var(--text-main) !important;
     border: 1px solid var(--border);
 }
 
@@ -295,19 +296,31 @@ body {
 }
 
 .feature-card,
-.page-card,
 .doc-card {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 28px;
     transition: transform 0.2s, border-color 0.2s;
-    text-decoration: none;
     color: var(--text-main);
 }
 
-.page-card:hover,
-.feature-card:hover {
+/* Reset Link Styles on page cards */
+a.page-card,
+a.page-card:visited,
+a.page-card:hover,
+a.page-card:active {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: transform 0.2s, border-color 0.2s;
+    text-decoration: none !important;
+    color: var(--text-main) !important;
+    display: block;
+}
+
+a.page-card:hover {
     transform: translateY(-4px);
     border-color: var(--accent-cyan);
 }
@@ -326,17 +339,28 @@ body {
     border: 1px solid var(--border);
 }
 
+.feature-icon svg,
+.page-card-icon svg {
+    stroke: var(--accent-cyan) !important;
+    color: var(--accent-cyan) !important;
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
 .feature-card h3,
-.page-card h3 {
+a.page-card h3 {
     font-size: 1.25rem;
     margin-bottom: 10px;
-    color: #fff;
+    color: #ffffff !important;
+    text-decoration: none !important;
 }
 
 .feature-card p,
-.page-card p {
-    color: var(--text-muted);
+a.page-card p {
+    color: var(--text-muted) !important;
     font-size: 0.95rem;
+    text-decoration: none !important;
 }
 
 .doc-card {
@@ -358,6 +382,7 @@ body {
     padding: 16px;
     margin-top: 16px;
     font-family: var(--font-mono);
+    overflow-x: auto;
 }
 
 /* Table */
