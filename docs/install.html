@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gftp - Installation & Build Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand"><span class="brand-accent">g</span>ftp <span
+                    class="badge">v1.0</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Overview</a>
+                <a href="docs.html">Docs & CLI</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="install.html" class="active">Installation</a>
+                <a href="releases.html">Releases</a>
+                <a href="https://github.com/sabbir28/gftp" target="_blank" class="github-btn">GitHub Repo</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="section-title">Installation & Build Guide</h1>
+            <p class="section-subtitle">How to install pre-compiled binaries or build <code>gftp</code> from source on
+                Windows.</p>
+
+            <div class="doc-card">
+                <h2>1. Download Pre-Compiled Binary</h2>
+                <p>Download the latest standalone executable package from GitHub Releases:</p>
+                <div class="hero-actions" style="margin: 20px 0;">
+                    <a href="https://github.com/sabbir28/gftp/releases" target="_blank" class="btn btn-primary">Download
+                        Latest gftp.exe ZIP</a>
+                </div>
+            </div>
+
+            <div class="doc-card">
+                <h2>2. Building from Source (MinGW / GCC)</h2>
+                <p>Requires GCC/MinGW-w64 with C++17 support:</p>
+                <div class="code-block">
+                    <pre><code># Clone workspace repository
+git clone https://github.com/sabbir28/gftp.git
+cd gftp
+
+# Build gftp.exe using Makefile
+mingw32-make</code></pre>
+                </div>
+            </div>
+
+            <div class="doc-card">
+                <h2>3. Building with CMake</h2>
+                <div class="code-block">
+                    <pre><code>mkdir build
+cd build
+cmake ..
+cmake --build .</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 <strong>gftp Project</strong>. Open-source under MIT License.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

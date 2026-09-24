@@ -24,18 +24,21 @@ namespace fs = std::filesystem;
 void printUsage() {
     UI::printBanner();
     std::cout << UI::BOLD << "USAGE:" << UI::RESET << "\n";
-    std::cout << "  gftp <command> [options]\n\n";
+    std::cout << "  gftp [command] [options]\n";
+    std::cout << "  gftp --git <repository_url> [--ftp <remote_dir>] [options]\n\n";
 
     std::cout << UI::BOLD << "COMMANDS:" << UI::RESET << "\n";
     std::cout << "  " << UI::CYAN << "init" << UI::RESET << "       Initialize gftp configuration in current folder\n";
     std::cout << "              Options: --preset (Use default server preset: ftpupload.net)\n";
-    std::cout << "                       --host <H> --user <U> --pass <P> --port <P> --remote-dir <R>\n";
+    std::cout << "                       --git <url> --ftp <remote_dir>\n";
     std::cout << "  " << UI::CYAN << "config" << UI::RESET << "     View or update settings\n";
     std::cout << "              Usage:   gftp config [show | set <key> <value>]\n";
     std::cout << "  " << UI::CYAN << "test" << UI::RESET << "       Test FTP server connection & authentication\n";
     std::cout << "  " << UI::CYAN << "status" << UI::RESET << "     Show pending modified/added/deleted files ready to push\n";
     std::cout << "  " << UI::CYAN << "push" << UI::RESET << "       Execute differential FTP synchronization\n";
-    std::cout << "              Options: --dry-run (Preview without uploading)\n";
+    std::cout << "              Options: --git <url> (Auto clone/fetch git project before sync)\n";
+    std::cout << "                       --ftp <dir> (Override remote FTP destination directory)\n";
+    std::cout << "                       --dry-run (Preview without uploading)\n";
     std::cout << "                       --all / --force (Upload all tracked files regardless of SHA)\n";
     std::cout << "  " << UI::CYAN << "sync" << UI::RESET << "       Alias for 'push'\n";
     std::cout << "  " << UI::CYAN << "log" << UI::RESET << "        View sync history\n";
@@ -43,11 +46,10 @@ void printUsage() {
     std::cout << "  " << UI::CYAN << "help" << UI::RESET << "       Show this help message\n\n";
 
     std::cout << UI::BOLD << "EXAMPLES:" << UI::RESET << "\n";
+    std::cout << "  gftp --git https://github.com/sabbir28/gftp.git --ftp /htdocs\n";
     std::cout << "  gftp init --preset\n";
-    std::cout << "  gftp test\n";
     std::cout << "  gftp status\n";
     std::cout << "  gftp push --dry-run\n";
-    std::cout << "  gftp push\n";
 }
 
 int main(int argc, char* argv[]) {
@@ -58,10 +60,28 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    std::string cmd = argv[1];
+    std::string gitUrl = "";
+    std::string ftpDir = "";
+    std::string cmd = "";
     std::vector<std::string> args;
-    for (int i = 2; i < argc; ++i) {
-        args.push_back(argv[i]);
+
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg == "--git" && i + 1 < argc) {
+            gitUrl = argv[++i];
+        } else if (arg == "--ftp" && i + 1 < argc) {
+            ftpDir = argv[++i];
+        } else if (cmd.empty() && arg[0] != '-') {
+            cmd = arg;
+        } else {
+            args.push_back(arg);
+        }
+    }
+
+    if (cmd.empty() && !gitUrl.empty()) {
+        cmd = "push";
+    } else if (cmd.empty()) {
+        cmd = "help";
     }
 
     if (cmd == "version" || cmd == "-v" || cmd == "--version") {
@@ -90,9 +110,16 @@ int main(int argc, char* argv[]) {
             else if (args[i] == "--remote-dir" && i + 1 < args.size()) cfg.remote_dir = args[++i];
         }
 
+        if (!ftpDir.empty()) cfg.remote_dir = ftpDir;
+
         if (usePreset || (!usePreset && cfg.host.empty() && cfg.user.empty())) {
             cfg = GFtpConfig::getDefaultPreset();
+            if (!ftpDir.empty()) cfg.remote_dir = ftpDir;
             UI::printInfo("Loaded target preset configuration (ftpupload.net / mseet_42012618).");
+        }
+
+        if (!gitUrl.empty()) {
+            GitEngine::cloneOrFetchRepo(gitUrl);
         }
 
         if (cfg.saveToFile()) {
@@ -117,8 +144,16 @@ int main(int argc, char* argv[]) {
     // Load config for all other commands
     GFtpConfig cfg;
     if (!cfg.loadFromFile()) {
-        // If config doesn't exist yet, offer default preset
         cfg = GFtpConfig::getDefaultPreset();
+    }
+
+    if (!ftpDir.empty()) {
+        cfg.remote_dir = ftpDir;
+    }
+
+    // Handle --git <url> cloning if requested
+    if (!gitUrl.empty()) {
+        GitEngine::cloneOrFetchRepo(gitUrl);
     }
 
     // Command: config

@@ -20,6 +20,9 @@ public:
     // Returns differential files between old SHA and HEAD (or local uncommitted changes if oldSHA == "HEAD")
     static std::vector<FileChange> getDiffSinceCommit(const std::string& oldSHA);
 
+    // Clone or pull remote git repository URL into target workspace
+    static bool cloneOrFetchRepo(const std::string& repoUrl, const std::string& targetDir = ".");
+
     // Fallback scan for non-git folders
     static std::vector<FileChange> scanNonGitDiff(const std::string& manifestPath);
     static void updateNonGitManifest(const std::string& manifestPath);

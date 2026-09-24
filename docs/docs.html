@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gftp - User Guide & CLI Reference</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand"><span class="brand-accent">g</span>ftp <span
+                    class="badge">v1.0</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Overview</a>
+                <a href="docs.html" class="active">Docs & CLI</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="install.html">Installation</a>
+                <a href="releases.html">Releases</a>
+                <a href="https://github.com/sabbir28/gftp" target="_blank" class="github-btn">GitHub Repo</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="section-title">User Guide & Command Reference</h1>
+            <p class="section-subtitle">Detailed documentation for all <code>gftp</code> CLI commands, options, and
+                configuration keys.</p>
+
+            <div class="doc-card">
+                <h2>Direct Remote Git Cloning & Auto Push</h2>
+                <p><code>gftp</code> allows you to clone a remote Git repository and automatically upload it directly to
+                    an FTP destination directory in a single command:</p>
+                <div class="code-block">
+                    <pre><code># Clone git project and push to target remote FTP folder /htdocs
+gftp --git https://github.com/sabbir28/gftp.git --ftp /htdocs
+
+# Perform dry-run preview for remote git project
+gftp --git https://github.com/sabbir28/gftp.git --ftp /htdocs --dry-run</code></pre>
+                </div>
+            </div>
+
+            <div class="doc-card">
+                <h2>Command Reference Matrix</h2>
+                <table class="cmd-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Supported Flags</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>gftp init</code></td>
+                            <td><code>--preset</code>, <code>--host</code>, <code>--user</code>, <code>--pass</code>,
+                                <code>--port</code>, <code>--remote-dir</code>, <code>--git</code></td>
+                            <td>Initializes <code>.gftp/config</code> in current folder with credentials or preset</td>
+                        </tr>
+                        <tr>
+                            <td><code>gftp config</code></td>
+                            <td><code>show</code>, <code>set &lt;key&gt; &lt;value&gt;</code></td>
+                            <td>Inspect or modify configuration settings dynamically</td>
+                        </tr>
+                        <tr>
+                            <td><code>gftp test</code></td>
+                            <td>None</td>
+                            <td>Validates FTP server connection, authentication, and directory write permissions</td>
+                        </tr>
+                        <tr>
+                            <td><code>gftp status</code></td>
+                            <td><code>--git &lt;url&gt;</code></td>
+                            <td>Compares local HEAD commit SHA against remote synced SHA and prints file change table
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>gftp push</code> / <code>gftp sync</code></td>
+                            <td><code>--git &lt;url&gt;</code>, <code>--ftp &lt;dir&gt;</code>, <code>--dry-run</code>,
+                                <code>--force</code>, <code>--all</code></td>
+                            <td>Uploads pending modified/added files, handles deletions, updates remote SHA state</td>
+                        </tr>
+                        <tr>
+                            <td><code>gftp log</code></td>
+                            <td>None</td>
+                            <td>Displays historical deployment transfer records</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="doc-card">
+                <h2>Configuration File Options (<code>.gftp/config</code>)</h2>
+                <table class="cmd-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Default Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>host</code></td>
+                            <td><code>ftpupload.net</code></td>
+                            <td>FTP Server Hostname or IP address</td>
+                        </tr>
+                        <tr>
+                            <td><code>port</code></td>
+                            <td><code>21</code></td>
+                            <td>FTP Service Port</td>
+                        </tr>
+                        <tr>
+                            <td><code>user</code></td>
+                            <td><code>mseet_42012618</code></td>
+                            <td>FTP Account Username</td>
+                        </tr>
+                        <tr>
+                            <td><code>pass</code></td>
+                            <td>*(Encoded default)*</td>
+                            <td>FTP Account Password</td>
+                        </tr>
+                        <tr>
+                            <td><code>remote_dir</code></td>
+                            <td><code>/htdocs</code></td>
+                            <td>Remote root directory on target FTP server</td>
+                        </tr>
+                        <tr>
+                            <td><code>passive</code></td>
+                            <td><code>true</code></td>
+                            <td>Enable Passive Mode (PASV) transfers</td>
+                        </tr>
+                        <tr>
+                            <td><code>delete_remote</code></td>
+                            <td><code>false</code></td>
+                            <td>Remove remote files deleted locally</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 <strong>gftp Project</strong>. Open-source under MIT License.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

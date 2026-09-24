@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gftp - Fast Git-Aware FTP Sync CLI for Windows</title>
-    <meta name="description" content="gftp is a high-performance C++ command-line tool built for Windows that accelerates website and codebase deployments by performing Git commit differential FTP sync.">
+    <title>gftp - Git-Aware FTP Differential Sync CLI for Windows</title>
+    <meta name="description"
+        content="gftp is a high-performance C++ command-line tool built for Windows that accelerates website and codebase deployments by performing Git commit differential FTP sync.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Header Navigation -->
     <header class="navbar">
         <div class="container nav-container">
-            <a href="#" class="brand">
+            <a href="index.html" class="brand">
                 <span class="brand-accent">g</span>ftp
                 <span class="badge">v1.0</span>
             </a>
             <nav class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#quickstart">Quick Start</a>
-                <a href="#cli-reference">CLI Commands</a>
-                <a href="#architecture">Architecture</a>
+                <a href="index.html" class="active">Overview</a>
+                <a href="docs.html">Docs & CLI</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="install.html">Installation</a>
+                <a href="releases.html">Releases</a>
                 <a href="https://github.com/sabbir28/gftp" target="_blank" class="github-btn">
-                    <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                    <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
                     </svg>
                     GitHub Repo
                 </a>
@@ -37,13 +44,18 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
-            <h1 class="hero-title">Stop Re-uploading Everything.<br><span class="gradient-text">Sync Only Git Changes via FTP.</span></h1>
+            <h1 class="hero-title">Stop Re-uploading Everything.<br><span class="gradient-text">Sync Git Repos Directly
+                    via FTP.</span></h1>
             <p class="hero-subtitle">
-                <code>gftp</code> is a lightweight, high-performance C++ CLI for Windows. It tracks your local Git HEAD commit against the deployed remote state, uploading <strong>only modified or added files</strong> with real-time transfer progress.
+                <code>gftp</code> is a lightweight, high-performance C++ CLI for Windows. Clone & push any remote Git
+                repository straight to an FTP server in one single command:
             </p>
+            <div class="hero-code-banner">
+                <code>gftp --git https://github.com/sabbir28/gftp.git --ftp /htdocs</code>
+            </div>
             <div class="hero-actions">
-                <a href="#quickstart" class="btn btn-primary">Get Started</a>
-                <a href="https://github.com/sabbir28/gftp/releases" target="_blank" class="btn btn-secondary">Download gftp.exe</a>
+                <a href="docs.html" class="btn btn-primary">Read Documentation</a>
+                <a href="install.html" class="btn btn-secondary">Download & Install</a>
             </div>
 
             <!-- Terminal Showcase Window -->
@@ -52,22 +64,23 @@
                     <span class="dot red"></span>
                     <span class="dot yellow"></span>
                     <span class="dot green"></span>
-                    <span class="terminal-title">gftp.exe status</span>
+                    <span class="terminal-title">gftp --git https://github.com/sabbir28/gftp --ftp /htdocs</span>
                 </div>
                 <div class="terminal-body">
-                    <pre><span class="cyan">=== gftp Sync Status ===</span>
-<span class="blue">[i]</span> Local Commit HEAD: <span class="yellow">de36bcf</span> (main)
-<span class="blue">[i]</span> Last Remote Synced Commit: <span class="yellow">8f12a90</span>
-
+                    <pre><span class="cyan">=== gftp Git-Aware Differential Push ===</span>
+<span class="blue">[i]</span> Cloning remote Git repository: <span class="yellow">https://github.com/sabbir28/gftp.git</span>...
+<span class="green">[✓]</span> Successfully cloned repository into current workspace!
+<span class="blue">[i]</span> Target: <span class="cyan">mseet_42012618@ftpupload.net:21/htdocs</span>
 <span class="bold">ACTION      FILE PATH                                    SIZE</span>
 <span class="gray">------------------------------------------------------------------------</span>
 <span class="green">ADDED       src/ftp_client.cpp                           7.30 KB</span>
 <span class="yellow">MODIFIED    src/main.cpp                                 8.46 KB</span>
 <span class="green">ADDED       Makefile                                     508 B</span>
 <span class="gray">------------------------------------------------------------------------</span>
-<span class="blue">[i]</span> Total pending payload: <span class="yellow">16.26 KB</span> (3 files to upload, 0 to delete)
+<span class="blue">[i]</span> Syncing 3 file(s) (16.26 KB)...
 
-<span class="green">[✓] Ready to push! Run 'gftp push' to deploy.</span></pre>
+<span class="cyan">src/ftp_client.cpp     </span> [<span class="green">=========================></span>] 100% (7.30 KB) <span class="yellow">450.2 KB/s</span> <span class="green">[DONE]</span>
+<span class="green">[✓] Synchronization Complete in 1.2s!</span></pre>
                 </div>
             </div>
         </div>
@@ -76,154 +89,148 @@
     <!-- Features Grid -->
     <section id="features" class="section">
         <div class="container">
-            <h2 class="section-title">Why Use <span class="gradient-text">gftp</span>?</h2>
+            <h2 class="section-title">Core Features & Capabilities</h2>
             <p class="section-subtitle">Designed for speed, safety, and seamless Git workflow integration.</p>
 
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M2 12h20" />
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                    </div>
+                    <h3>Direct Remote Git Sync</h3>
+                    <p>Run <code>gftp --git &lt;url&gt; --ftp &lt;dir&gt;</code> to automatically clone remote Git
+                        repositories and push directly to your target FTP destination.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                        </svg>
+                    </div>
                     <h3>Git Differential Sync</h3>
-                    <p>Calculates <code>git diff</code> against the last deployed remote commit SHA (<code>.gftp_state</code>). Re-uploading unchanged files is a thing of the past.</p>
+                    <p>Calculates <code>git diff</code> against the last deployed remote commit SHA
+                        (<code>.gftp_state</code>). Re-uploading unchanged files is a thing of the past.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                            <rect x="9" y="9" width="6" height="6" />
+                            <line x1="9" y1="1" x2="9" y2="4" />
+                            <line x1="15" y1="1" x2="15" y2="4" />
+                            <line x1="9" y1="20" x2="9" y2="23" />
+                            <line x1="15" y1="20" x2="15" y2="23" />
+                            <line x1="20" y1="9" x2="23" y2="9" />
+                            <line x1="20" y1="14" x2="23" y2="14" />
+                            <line x1="1" y1="9" x2="4" y2="9" />
+                            <line x1="1" y1="14" x2="4" y2="14" />
+                        </svg>
+                    </div>
                     <h3>Native WinINet C++ Engine</h3>
-                    <p>Built directly with C++17 on Windows <code>wininet.dll</code> and <code>shlwapi.dll</code>. Zero external DLLs or heavy runtime dependencies.</p>
+                    <p>Built directly with C++17 on Windows <code>wininet.dll</code> and <code>shlwapi.dll</code>. Zero
+                        external DLLs or heavy runtime dependencies.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
                     <h3>Dry-Run Preview</h3>
-                    <p>Inspect exact file changes, deletion queues, and total transfer size beforehand with <code>gftp push --dry-run</code>.</p>
+                    <p>Inspect exact file changes, deletion queues, and total transfer size beforehand with
+                        <code>gftp push --dry-run</code>.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📁</div>
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                        </svg>
+                    </div>
                     <h3>Smart Ignore Engine</h3>
-                    <p>Parses <code>.gitignore</code> and <code>.gftpignore</code> to automatically exclude <code>node_modules</code>, <code>.git</code>, logs, and sensitive binaries.</p>
+                    <p>Parses <code>.gitignore</code> and <code>.gftpignore</code> to automatically exclude
+                        <code>node_modules</code>, <code>.git</code>, logs, and sensitive binaries.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>ANSI Terminal Visuals</h3>
-                    <p>Live progress bars with transfer rates (KB/s, MB/s), ETA estimation, and colorized tabular diff previews.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>CI/CD Release Pipelines</h3>
-                    <p>Automate build releases using GitHub Actions for automatic ZIP packaging and dynamic version tracking.</p>
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                        </svg>
+                    </div>
+                    <h3>CI/CD Release Automation</h3>
+                    <p>Includes GitHub Actions workflows for automated MinGW binary build generation, version tagging,
+                        and GitHub Releases packaging.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Interactive Quick Start -->
-    <section id="quickstart" class="section bg-alt">
+    <!-- Navigation Cards to Subpages -->
+    <section class="section bg-alt">
         <div class="container">
-            <h2 class="section-title">Quick Start Guide</h2>
-            
-            <div class="tab-container">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="switchTab(event, 'tab-init')">1. Initialize</button>
-                    <button class="tab-btn" onclick="switchTab(event, 'tab-test')">2. Test Connection</button>
-                    <button class="tab-btn" onclick="switchTab(event, 'tab-status')">3. Inspect Diff</button>
-                    <button class="tab-btn" onclick="switchTab(event, 'tab-push')">4. Push & Sync</button>
-                </div>
-
-                <div id="tab-init" class="tab-content active">
-                    <h3>Initialize Configuration</h3>
-                    <p>Initialize workspace config using preset target or custom arguments:</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre><code># Initialize using built-in target preset
-gftp init --preset
-
-# Or initialize with custom FTP credentials
-gftp init --host ftpupload.net --user myuser --pass mysecret --remote-dir /htdocs</code></pre>
+            <h2 class="section-title">Explore Documentation</h2>
+            <div class="pages-grid">
+                <a href="docs.html" class="page-card">
+                    <div class="page-card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                        </svg>
                     </div>
-                </div>
-
-                <div id="tab-test" class="tab-content">
-                    <h3>Test FTP Server Connection</h3>
-                    <p>Validate FTP connection, authentication, and directory write access:</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre><code>gftp test</code></pre>
+                    <h3>User Guide & CLI Manual</h3>
+                    <p>Complete guide on command options, <code>--git</code> remote cloning, presets, and configuration
+                        key settings.</p>
+                </a>
+                <a href="architecture.html" class="page-card">
+                    <div class="page-card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <line x1="3" y1="9" x2="21" y2="9" />
+                            <line x1="9" y1="21" x2="9" y2="9" />
+                        </svg>
                     </div>
-                </div>
-
-                <div id="tab-status" class="tab-content">
-                    <h3>Check Pending Changes</h3>
-                    <p>View files that have been modified or added since your last sync:</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre><code>gftp status</code></pre>
+                    <h3>C++ Architecture</h3>
+                    <p>Learn how the native WinINet FTP client, Git diff parser, and XOR credential obfuscator work
+                        under the hood.</p>
+                </a>
+                <a href="install.html" class="page-card">
+                    <div class="page-card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </div>
-                </div>
-
-                <div id="tab-push" class="tab-content">
-                    <h3>Execute Differential Sync</h3>
-                    <p>Upload modified files with live transfer progress bars:</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre><code># Dry-run preview
-gftp push --dry-run
-
-# Real differential push
-gftp push</code></pre>
+                    <h3>Installation & Build</h3>
+                    <p>Download pre-compiled binaries or build from source using GCC/MinGW, Make, or CMake.</p>
+                </a>
+                <a href="releases.html" class="page-card">
+                    <div class="page-card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.71 1.26-1.5 1.5-2.5l-4.5-4.5c-1 0-1.79.79-2.5 1.5z" />
+                            <path d="M12 15l-3-3 7.5-7.5c.78-.78 2.05-.78 2.83 0l.17.17c.78.78.78 2.05 0 2.83L12 15z" />
+                        </svg>
                     </div>
-                </div>
+                    <h3>Releases & CI/CD</h3>
+                    <p>View release logs, dynamic versioning system details, and GitHub Actions build pipelines.</p>
+                </a>
             </div>
-        </div>
-    </section>
-
-    <!-- Command Reference Matrix -->
-    <section id="cli-reference" class="section">
-        <div class="container">
-            <h2 class="section-title">CLI Command Reference</h2>
-            <table class="cmd-table">
-                <thead>
-                    <tr>
-                        <th>Command</th>
-                        <th>Arguments</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>gftp init</code></td>
-                        <td><code>--preset</code> or <code>--host</code> <code>--user</code></td>
-                        <td>Initialize <code>.gftp/config</code> and default <code>.gftpignore</code> file</td>
-                    </tr>
-                    <tr>
-                        <td><code>gftp config</code></td>
-                        <td><code>show</code> or <code>set &lt;key&gt; &lt;val&gt;</code></td>
-                        <td>View or update configuration settings dynamically</td>
-                    </tr>
-                    <tr>
-                        <td><code>gftp test</code></td>
-                        <td>None</td>
-                        <td>Verify FTP server connection, authentication, and directory access</td>
-                    </tr>
-                    <tr>
-                        <td><code>gftp status</code></td>
-                        <td>None</td>
-                        <td>Compare local git HEAD against remote commit state SHA</td>
-                    </tr>
-                    <tr>
-                        <td><code>gftp push</code></td>
-                        <td><code>--dry-run</code>, <code>--force</code>, <code>--all</code></td>
-                        <td>Upload modified files and update remote commit state SHA</td>
-                    </tr>
-                    <tr>
-                        <td><code>gftp sync</code></td>
-                        <td>Same as push</td>
-                        <td>Alias for <code>gftp push</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>gftp log</code></td>
-                        <td>None</td>
-                        <td>Display historical synchronization transfer logs</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </section>
 
@@ -231,10 +238,11 @@ gftp push</code></pre>
     <footer class="footer">
         <div class="container footer-content">
             <p>&copy; 2026 <strong>gftp Project</strong>. Open-source under MIT License.</p>
-            <p><a href="https://github.com/sabbir28/gftp" target="_blank">View on GitHub</a> | Built with C++17 for Windows</p>
+            <p><a href="https://github.com/sabbir28/gftp" target="_blank">View on GitHub</a> | Built with C++17 for
+                Windows</p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
 </body>
+
 </html>

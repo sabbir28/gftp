@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gftp - Architecture & C++ Internal Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand"><span class="brand-accent">g</span>ftp <span
+                    class="badge">v1.0</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Overview</a>
+                <a href="docs.html">Docs & CLI</a>
+                <a href="architecture.html" class="active">Architecture</a>
+                <a href="install.html">Installation</a>
+                <a href="releases.html">Releases</a>
+                <a href="https://github.com/sabbir28/gftp" target="_blank" class="github-btn">GitHub Repo</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="section-title">System Architecture & Design</h1>
+            <p class="section-subtitle">Understanding how <code>gftp</code> achieves high-speed differential uploads on
+                Windows.</p>
+
+            <div class="doc-card">
+                <h2>Module Overview</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>1. Windows WinINet Subsystem</h3>
+                        <p>Wraps <code>wininet.dll</code> (<code>InternetOpenA</code>, <code>InternetConnectA</code>,
+                            <code>FtpOpenFileA</code>, <code>InternetWriteFile</code>). Provides streaming byte chunks
+                            with callback notifications for progress bars.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>2. Git Engine & SHA State Tracker</h3>
+                        <p>Interfaces with <code>git diff --name-status &lt;SHA&gt;</code> and stores the last deployed
+                            commit SHA remotely in <code>.gftp_state</code> on the FTP server.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>3. Ignore Rules Engine</h3>
+                        <p>Implements wildcard pattern matching (<code>*</code>, <code>?</code>, <code>/</code>) to
+                            parse <code>.gitignore</code> and <code>.gftpignore</code>, preventing transfer of temporary
+                            files and node modules.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>4. Credential Obfuscation</h3>
+                        <p>Default target credentials in C++ source are encoded using byte-array XOR obfuscation keying
+                            (<code>0x5A</code>) so passwords are never stored in plain-text strings inside binaries.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="doc-card">
+                <h2>Synchronization Workflow Diagram</h2>
+                <div class="code-block">
+                    <pre><code>+-----------------------+        +-----------------------+        +-----------------------+
+|  Local Working Tree   | ------> |  Git Engine (HEAD SHA)| ------> |  Fetch Remote SHA     |
+|  (Modified files)     |        |  git diff <SHA> HEAD   |        |  (.gftp_state on FTP) |
++-----------------------+        +-----------------------+        +-----------------------+
+                                             |
+                                             v
+                                  +--------------------+
+                                  | Ignore Filter      |
+                                  | (.gitignore rules) |
+                                  +--------------------+
+                                             |
+                                             v
+                                  +--------------------+
+                                  | WinINet FTP Sync   |
+                                  | Live Progress Bar  |
+                                  +--------------------+
+                                             |
+                                             v
+                                  +--------------------+
+                                  | Update Remote SHA  |
+                                  | (.gftp_state SHA)  |
+                                  +--------------------+</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 <strong>gftp Project</strong>. Open-source under MIT License.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

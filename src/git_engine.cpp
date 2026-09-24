@@ -35,6 +35,29 @@ bool GitEngine::isGitRepo() {
     return (output == "true");
 }
 
+bool GitEngine::cloneOrFetchRepo(const std::string& repoUrl, const std::string& targetDir) {
+    if (repoUrl.empty()) return false;
+
+    if (isGitRepo()) {
+        UI::printInfo("Existing Git repository detected. Fetching latest updates from: " + repoUrl);
+        executeGitCommand("fetch origin");
+        executeGitCommand("pull origin");
+        return true;
+    }
+
+    UI::printInfo("Cloning remote Git repository: " + repoUrl + "...");
+    std::string cloneCmd = "clone " + repoUrl + " " + targetDir;
+    executeGitCommand(cloneCmd);
+
+    if (isGitRepo()) {
+        UI::printSuccess("Successfully cloned repository into current workspace!");
+        return true;
+    } else {
+        UI::printError("Failed to clone Git repository: " + repoUrl);
+        return false;
+    }
+}
+
 std::string GitEngine::getCurrentCommitSHA() {
     return executeGitCommand("rev-parse HEAD");
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gftp - Releases & GitHub CI/CD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand"><span class="brand-accent">g</span>ftp <span
+                    class="badge">v1.0</span></a>
+            <nav class="nav-links">
+                <a href="index.html">Overview</a>
+                <a href="docs.html">Docs & CLI</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="install.html">Installation</a>
+                <a href="releases.html" class="active">Releases</a>
+                <a href="https://github.com/sabbir28/gftp" target="_blank" class="github-btn">GitHub Repo</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="section-title">Releases & CI/CD Pipelines</h1>
+            <p class="section-subtitle">Automated build versioning, GitHub Releases, and continuous integration
+                workflows.</p>
+
+            <div class="doc-card">
+                <h2>Automated GitHub Actions Release Workflow</h2>
+                <p>Every push to <code>main</code> or release tag automatically triggers the build workflow defined in
+                    <code>.github/workflows/release.yml</code>:</p>
+                <div class="code-block">
+                    <pre><code>1. Triggers on push to main or v* tags
+2. Sets up MinGW GCC Toolchain on Windows runner
+3. Computes dynamic build version (e.g. v1.0.12)
+4. Compiles gftp.exe with -DGFTP_BUILD_NUMBER="v1.0.12"
+5. Packages gftp-v1.0.12-windows-x64.zip
+6. Publishes GitHub Release with attached binary ZIP asset</code></pre>
+                </div>
+            </div>
+
+            <div class="doc-card">
+                <h2>Release History</h2>
+                <table class="cmd-table">
+                    <thead>
+                        <tr>
+                            <th>Version Tag</th>
+                            <th>Release Date</th>
+                            <th>Key Features</th>
+                            <th>Asset Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>v1.0.0</code></td>
+                            <td>Sep 2026</td>
+                            <td>Initial release: WinINet FTP client, Git diff engine, <code>--git</code> direct clone &
+                                push, XOR obfuscation</td>
+                            <td><a href="https://github.com/sabbir28/gftp/releases" target="_blank"
+                                    class="cyan">gftp-v1.0.0-windows-x64.zip</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 <strong>gftp Project</strong>. Open-source under MIT License.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
