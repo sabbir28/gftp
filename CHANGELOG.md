@@ -1,0 +1,7 @@
+* Add gftp clean-remote feature & fix release.yml gh release create flags (eb8b5de - MD. SABBIR HOSHEN HOWLADER, 2026-09-24)
+* Fix GitHub Actions workflow: use msys2/setup-msys2 for MinGW GCC compilation (982a164 - MD. SABBIR HOSHEN HOWLADER, 2026-09-24)
+* Fix docs page-card link styling, SVG icon color, and GitHub Actions release workflow (da2ce12 - MD. SABBIR HOSHEN HOWLADER, 2026-09-24)
+* Add gftp --git <url> direct clone/sync feature & SVG vector icon multi-page docs (2b5305d - MD. SABBIR HOSHEN HOWLADER, 2026-09-24)
+* Add docs website for GitHub Pages and GitHub Actions auto-release workflows (9055c44 - MD. SABBIR HOSHEN HOWLADER, 2026-09-24)
+* Obfuscate default target credentials and sanitize public README (c078f5e - MD. SABBIR HOSHEN HOWLADER, 2026-09-24)
+* Initial commit of gftp: Git-Aware FTP Sync CLI for Windows (de36bcf - MD. SABBIR HOSHEN HOWLADER, 2026-09-24)

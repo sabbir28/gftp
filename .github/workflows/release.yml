@@ -48,16 +48,24 @@ jobs:
         run: |
           g++ -O3 -std=c++17 -Wall -I. -DGFTP_BUILD_NUMBER="\"v${BUILD_VER}\"" src/*.cpp -o gftp.exe -lwininet -lshlwapi
 
+      - name: Generate Automated Commit Changelog
+        shell: powershell
+        run: |
+          echo "# gftp Commit Changelog History" > CHANGELOG.md
+          echo "Generated automatically for build ${env:TAG_NAME} on $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          git log --pretty=format:"* %s (%h - %an, %ad)" --date=short >> CHANGELOG.md
+
       - name: Verify Binary Version Output
         run: |
           ./gftp.exe version
 
-      - name: Package Release ZIP Archive
+      - name: Package Release ZIP Archive (Executable, README & Changelog ONLY)
         shell: powershell
         run: |
           $zipName = "gftp-${env:TAG_NAME}-windows-x64.zip"
           echo "ZIP_NAME=${zipName}" >> $env:GITHUB_ENV
-          Compress-Archive -Path gftp.exe, README.md, Makefile, CMakeLists.txt -DestinationPath $zipName
+          Compress-Archive -Path gftp.exe, README.md, CHANGELOG.md -DestinationPath $zipName
 
       - name: Create Git Tag and Publish GitHub Release
         shell: powershell
@@ -78,14 +86,18 @@ jobs:
           
           Automated build release for **gftp** (Git-Aware FTP Differential Sync CLI for Windows).
           
-          ### Features Included:
-          - Direct Remote Git Cloning & Auto Push (`gftp --git <url> --ftp <dir>`).
-          - Fast differential sync using Git commit history & SHA tracking.
-          - Built-in target configuration preset options (`ftpupload.net` / `mseet_42012618`).
-          - Native Windows WinINet API execution with 0 external DLL dependencies.
-          - Clean multi-page documentation site with vector SVG icons.
+          ### Package Contents:
+          - `gftp.exe` (Standalone Windows C++ binary)
+          - `README.md` (CLI Usage Guide & Manual)
+          - `CHANGELOG.md` (Complete Git Commit History)
           
-          ### Download Binary:
+          ### Key Features:
+          - Direct Remote Git Cloning & Auto Push (`gftp --git <url> --ftp <dir>`).
+          - Remote FTP Directory Wipe Engine (`gftp clean-remote`).
+          - Fast differential sync using Git commit history & SHA tracking (`.gftp_state`).
+          - Native Windows WinINet API execution with 0 external DLL dependencies.
+          
+          ### Download Binary Package:
           Attached: `${zipName}`
           "@
 
