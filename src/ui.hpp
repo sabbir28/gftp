@@ -33,7 +33,16 @@ namespace UI {
     void printHeader(const std::string& title);
 
     // Progress Bar
-    void renderProgressBar(const std::string& filename, size_t current, size_t total, double speedBps, double elapsedSeconds);
+    void renderBatchProgressBar(
+        const std::string& currentFilename,
+        size_t currentFileIndex,
+        size_t totalFilesCount,
+        size_t fileTransferredBytes,
+        size_t fileTotalBytes,
+        size_t batchTransferredBytes,
+        size_t batchTotalBytes,
+        double speedBps
+    );
     void finishProgressBar(bool success = true);
 
     // Summary tables

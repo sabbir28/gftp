@@ -141,18 +141,24 @@ bool SyncEngine::executePush(const GFtpConfig& cfg, const SyncPlan& plan, bool d
         if (!targetRemote.empty() && targetRemote.back() != '/') targetRemote += "/";
         targetRemote += item.relativePath;
 
-        std::string progressLabel = "[" + std::to_string(i + 1) + "/" + std::to_string(plan.itemsToUpload.size()) + "] " + item.relativePath;
-
         bool uploadOk = ftp.uploadFile(
             item.relativePath,
             targetRemote,
             [&](size_t transferred, size_t total, double speed) {
-                UI::renderProgressBar(item.relativePath, transferred, total, speed, 0.0);
+                UI::renderBatchProgressBar(
+                    item.relativePath,
+                    i + 1,
+                    plan.itemsToUpload.size(),
+                    transferred,
+                    total,
+                    uploadedBytesTotal,
+                    plan.totalBytesToUpload,
+                    speed
+                );
             }
         );
 
         if (uploadOk) {
-            UI::finishProgressBar(true);
             uploadedFilesCount++;
             uploadedBytesTotal += item.size;
         } else {
@@ -161,6 +167,7 @@ bool SyncEngine::executePush(const GFtpConfig& cfg, const SyncPlan& plan, bool d
             allSuccess = false;
         }
     }
+    UI::finishProgressBar(true);
 
     // Delete Files
     if (cfg.delete_remote) {

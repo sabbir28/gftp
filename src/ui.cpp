@@ -87,37 +87,54 @@ namespace UI {
         std::cout << "\n" << BOLD << MAGENTA << "=== " << title << " ===" << RESET << "\n";
     }
 
-    void renderProgressBar(const std::string& filename, size_t current, size_t total, double speedBps, double elapsedSeconds) {
-        const int barWidth = 25;
-        double pct = (total > 0) ? (static_cast<double>(current) / total) : 1.0;
+    void renderBatchProgressBar(
+        const std::string& currentFilename,
+        size_t currentFileIndex,
+        size_t totalFilesCount,
+        size_t fileTransferredBytes,
+        size_t fileTotalBytes,
+        size_t batchTransferredBytes,
+        size_t batchTotalBytes,
+        double speedBps
+    ) {
+        const int barWidth = 20;
+        size_t overallTransferred = batchTransferredBytes + fileTransferredBytes;
+        double pct = (batchTotalBytes > 0) ? (static_cast<double>(overallTransferred) / batchTotalBytes) : 1.0;
         if (pct > 1.0) pct = 1.0;
         int pos = static_cast<int>(barWidth * pct);
 
-        std::string fn = filename;
-        if (fn.length() > 22) {
-            fn = "..." + fn.substr(fn.length() - 19);
+        std::string fn = currentFilename;
+        if (fn.length() > 20) {
+            fn = "..." + fn.substr(fn.length() - 17);
         }
 
         std::ostringstream bar;
-        bar << "\r" << CYAN << std::left << std::setw(23) << fn << RESET << " [";
+        // Carriage return and ANSI reset to refresh line in-place
+        bar << "\r" << BOLD << CYAN << "[" << currentFileIndex << "/" << totalFilesCount << "] " << RESET;
+        bar << WHITE << std::left << std::setw(21) << fn << RESET << " [";
+        
         for (int i = 0; i < barWidth; ++i) {
             if (i < pos) bar << GREEN << "=";
             else if (i == pos) bar << GREEN << ">";
             else bar << GRAY << " ";
         }
+        
         bar << RESET << "] " << std::right << std::setw(3) << static_cast<int>(pct * 100) << "% ";
-        bar << "(" << formatBytes(current) << "/" << formatBytes(total) << ") ";
+        bar << "(" << formatBytes(overallTransferred) << "/" << formatBytes(batchTotalBytes) << ") ";
         
         if (speedBps > 0) {
             bar << YELLOW << formatBytes(static_cast<size_t>(speedBps)) << "/s" << RESET;
         }
+
+        // Pad trailing space to overwrite previous longer text
+        bar << "   ";
 
         std::cout << bar.str() << std::flush;
     }
 
     void finishProgressBar(bool success) {
         if (success) {
-            std::cout << GREEN << " [DONE]" << RESET << "\n";
+            std::cout << "\r" << std::string(80, ' ') << "\r"; // Clear line
         } else {
             std::cout << RED << " [FAILED]" << RESET << "\n";
         }
