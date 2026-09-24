@@ -7,3 +7,4 @@ build/
 # Local gftp state & credentials
 .gftp/
 .gftpignore
+MiniLMS/
