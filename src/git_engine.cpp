@@ -35,27 +35,76 @@ bool GitEngine::isGitRepo() {
     return (output == "true");
 }
 
+static std::string getRepoNameFromUrl(const std::string& url) {
+    std::string s = url;
+    while (!s.empty() && (s.back() == '/' || s.back() == '\\')) s.pop_back();
+    if (s.size() > 4 && s.substr(s.size() - 4) == ".git") {
+        s = s.substr(0, s.size() - 4);
+    }
+    size_t lastSlash = s.find_last_of("/\\");
+    if (lastSlash != std::string::npos) {
+        return s.substr(lastSlash + 1);
+    }
+    return s;
+}
+
+static std::string normalizeGitUrl(std::string u) {
+    while (!u.empty() && (u.back() == '/' || u.back() == '\\')) u.pop_back();
+    if (u.size() > 4 && u.substr(u.size() - 4) == ".git") u = u.substr(0, u.size() - 4);
+    std::transform(u.begin(), u.end(), u.begin(), [](unsigned char c){ return (char)std::tolower(c); });
+    return u;
+}
+
 bool GitEngine::cloneOrFetchRepo(const std::string& repoUrl, const std::string& targetDir) {
     if (repoUrl.empty()) return false;
 
-    if (isGitRepo()) {
-        UI::printInfo("Existing Git repository detected. Fetching latest updates from: " + repoUrl);
+    std::string repoName = getRepoNameFromUrl(repoUrl);
+    std::string currentUrl = isGitRepo() ? executeGitCommand("config --get remote.origin.url") : "";
+
+    // If current working directory is already the requested Git repository
+    if (isGitRepo() && !currentUrl.empty() && normalizeGitUrl(currentUrl) == normalizeGitUrl(repoUrl)) {
+        UI::printInfo("Current directory is workspace for: " + repoUrl);
+        UI::printInfo("Fetching latest commits from remote...");
         executeGitCommand("fetch origin");
         executeGitCommand("pull origin");
         return true;
     }
 
-    UI::printInfo("Cloning remote Git repository: " + repoUrl + "...");
-    std::string cloneCmd = "clone " + repoUrl + " " + targetDir;
+    // Current directory is NOT the target git repo!
+    std::string dirToUse = targetDir;
+    if (dirToUse == "." && !repoName.empty()) {
+        dirToUse = repoName;
+    }
+
+    // If the subdirectory already exists, switch to it
+    if (fs::exists(dirToUse) && fs::is_directory(dirToUse)) {
+        UI::printInfo("Switching workspace to existing folder: ./" + dirToUse);
+        std::error_code ec;
+        fs::current_path(dirToUse, ec);
+        if (isGitRepo()) {
+            UI::printInfo("Fetching latest commits in ./" + dirToUse + "...");
+            executeGitCommand("fetch origin");
+            executeGitCommand("pull origin");
+            return true;
+        }
+    }
+
+    // Clone into subdirectory
+    UI::printInfo("Cloning remote Git repository: " + repoUrl + " -> ./" + dirToUse + "...");
+    std::string cloneCmd = "clone " + repoUrl + " " + dirToUse;
     executeGitCommand(cloneCmd);
 
-    if (isGitRepo()) {
-        UI::printSuccess("Successfully cloned repository into current workspace!");
-        return true;
-    } else {
-        UI::printError("Failed to clone Git repository: " + repoUrl);
-        return false;
+    if (fs::exists(dirToUse) && fs::is_directory(dirToUse)) {
+        std::error_code ec;
+        fs::current_path(dirToUse, ec);
+        if (isGitRepo()) {
+            UI::printSuccess("Successfully cloned and switched workspace to: ./" + dirToUse);
+            return true;
+        }
     }
+
+    UI::printError("Failed to clone or enter Git repository: " + repoUrl);
+    return false;
 }
 
 std::string GitEngine::getCurrentCommitSHA() {
