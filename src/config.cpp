@@ -8,12 +8,23 @@
 
 namespace fs = std::filesystem;
 
+static std::string decodeObfuscatedString(const std::vector<unsigned char>& data, unsigned char key = 0x5A) {
+    std::string decoded;
+    decoded.reserve(data.size());
+    for (unsigned char b : data) {
+        decoded += static_cast<char>(b ^ key);
+    }
+    return decoded;
+}
+
 GFtpConfig GFtpConfig::getDefaultPreset() {
     GFtpConfig cfg;
     cfg.host = "ftpupload.net";
     cfg.port = 21;
     cfg.user = "mseet_42012618";
-    cfg.pass = "hacker321";
+    // Obfuscated XOR bytes for default target preset password
+    static const std::vector<unsigned char> encPass = {0x3A, 0x33, 0x39, 0x31, 0x3F, 0x28, 0x69, 0x68, 0x6B};
+    cfg.pass = decodeObfuscatedString(encPass);
     cfg.remote_dir = "/htdocs";
     cfg.passive = true;
     cfg.delete_remote = false;

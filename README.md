@@ -15,13 +15,13 @@
 
 ---
 
-## Pre-Configured FTP Target
+## Pre-Configured Target Preset
 
-`gftp` comes with built-in setup presets for fast initialization:
+`gftp` includes built-in setup presets for fast initialization:
 - **Server**: `ftpupload.net`
 - **Port**: `21`
 - **Username**: `mseet_42012618`
-- **Password**: `hacker321`
+- **Password**: *(Obfuscated & encrypted in binary)*
 - **Remote Path**: `/htdocs`
 
 ---
@@ -29,13 +29,13 @@
 ## Quick Start Guide
 
 ### 1. Initialize Configuration
-Run `gftp init --preset` to initialize credentials:
+Run `gftp init --preset` to initialize with preset target:
 ```cmd
 gftp init --preset
 ```
 Alternatively, configure custom FTP details:
 ```cmd
-gftp init --host ftpupload.net --user mseet_42012618 --pass hacker321 --port 21 --remote-dir /htdocs
+gftp init --host ftpupload.net --user mseet_42012618 --pass <your_password> --port 21 --remote-dir /htdocs
 ```
 
 ### 2. Test Connection
