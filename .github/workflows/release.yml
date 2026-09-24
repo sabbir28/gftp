@@ -1,0 +1,72 @@
+name: Auto Build & Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up MinGW GCC Toolchain
+        uses: egor-trefilov/setup-mingw@v2
+        with:
+          version: '12.2.0'
+
+      - name: Generate Build Version Number
+        id: versioning
+        run: |
+          $runNumber = "${{ github.run_number }}"
+          $buildVer = "1.0.${runNumber}"
+          $tagName = "v${buildVer}"
+          echo "BUILD_VER=${buildVer}" >> $env:GITHUB_ENV
+          echo "TAG_NAME=${tagName}" >> $env:GITHUB_ENV
+          echo "Build Version: ${buildVer}"
+
+      - name: Compile gftp.exe with Dynamic Build Number
+        run: |
+          g++ -O3 -std=c++17 -Wall -I. -DGFTP_BUILD_NUMBER="\"v${env:BUILD_VER}\"" src/*.cpp -o gftp.exe -lwininet -lshlwapi
+
+      - name: Verify Binary Version Output
+        run: |
+          .\gftp.exe version
+
+      - name: Package Release ZIP Archive
+        run: |
+          $zipName = "gftp-${env:TAG_NAME}-windows-x64.zip"
+          echo "ZIP_NAME=${zipName}" >> $env:GITHUB_ENV
+          Compress-Archive -Path gftp.exe, README.md, Makefile, CMakeLists.txt -DestinationPath $zipName
+
+      - name: Create GitHub Release and Upload Artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $releaseNotes = @"
+          # gftp Release ${env:TAG_NAME}
+          
+          Automated build release for **gftp** (Git-Aware FTP Differential Sync CLI for Windows).
+          
+          ### What's Included:
+          - Fast differential sync using Git commit history & SHA tracking.
+          - Built-in target configuration preset options.
+          - Native Windows WinINet API execution with 0 external DLL dependencies.
+          - Real-time ANSI colored terminal interface with transfer speed metrics.
+          
+          ### Checksum / Binary Asset:
+          Attached: `${env:ZIP_NAME}`
+          "@
+
+          # Delete existing draft tag if re-running on main, then publish release
+          gh release create "${env:TAG_NAME}" "${env:ZIP_NAME}" --title "gftp ${env:TAG_NAME}" --notes "$releaseNotes" --generate-notes

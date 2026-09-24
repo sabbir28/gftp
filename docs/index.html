@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gftp - Fast Git-Aware FTP Sync CLI for Windows</title>
+    <meta name="description" content="gftp is a high-performance C++ command-line tool built for Windows that accelerates website and codebase deployments by performing Git commit differential FTP sync.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="brand">
+                <span class="brand-accent">g</span>ftp
+                <span class="badge">v1.0</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#quickstart">Quick Start</a>
+                <a href="#cli-reference">CLI Commands</a>
+                <a href="#architecture">Architecture</a>
+                <a href="https://github.com/sabbir28/gftp" target="_blank" class="github-btn">
+                    <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    GitHub Repo
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1 class="hero-title">Stop Re-uploading Everything.<br><span class="gradient-text">Sync Only Git Changes via FTP.</span></h1>
+            <p class="hero-subtitle">
+                <code>gftp</code> is a lightweight, high-performance C++ CLI for Windows. It tracks your local Git HEAD commit against the deployed remote state, uploading <strong>only modified or added files</strong> with real-time transfer progress.
+            </p>
+            <div class="hero-actions">
+                <a href="#quickstart" class="btn btn-primary">Get Started</a>
+                <a href="https://github.com/sabbir28/gftp/releases" target="_blank" class="btn btn-secondary">Download gftp.exe</a>
+            </div>
+
+            <!-- Terminal Showcase Window -->
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="terminal-title">gftp.exe status</span>
+                </div>
+                <div class="terminal-body">
+                    <pre><span class="cyan">=== gftp Sync Status ===</span>
+<span class="blue">[i]</span> Local Commit HEAD: <span class="yellow">de36bcf</span> (main)
+<span class="blue">[i]</span> Last Remote Synced Commit: <span class="yellow">8f12a90</span>
+
+<span class="bold">ACTION      FILE PATH                                    SIZE</span>
+<span class="gray">------------------------------------------------------------------------</span>
+<span class="green">ADDED       src/ftp_client.cpp                           7.30 KB</span>
+<span class="yellow">MODIFIED    src/main.cpp                                 8.46 KB</span>
+<span class="green">ADDED       Makefile                                     508 B</span>
+<span class="gray">------------------------------------------------------------------------</span>
+<span class="blue">[i]</span> Total pending payload: <span class="yellow">16.26 KB</span> (3 files to upload, 0 to delete)
+
+<span class="green">[✓] Ready to push! Run 'gftp push' to deploy.</span></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">Why Use <span class="gradient-text">gftp</span>?</h2>
+            <p class="section-subtitle">Designed for speed, safety, and seamless Git workflow integration.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Git Differential Sync</h3>
+                    <p>Calculates <code>git diff</code> against the last deployed remote commit SHA (<code>.gftp_state</code>). Re-uploading unchanged files is a thing of the past.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Native WinINet C++ Engine</h3>
+                    <p>Built directly with C++17 on Windows <code>wininet.dll</code> and <code>shlwapi.dll</code>. Zero external DLLs or heavy runtime dependencies.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Dry-Run Preview</h3>
+                    <p>Inspect exact file changes, deletion queues, and total transfer size beforehand with <code>gftp push --dry-run</code>.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📁</div>
+                    <h3>Smart Ignore Engine</h3>
+                    <p>Parses <code>.gitignore</code> and <code>.gftpignore</code> to automatically exclude <code>node_modules</code>, <code>.git</code>, logs, and sensitive binaries.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>ANSI Terminal Visuals</h3>
+                    <p>Live progress bars with transfer rates (KB/s, MB/s), ETA estimation, and colorized tabular diff previews.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>CI/CD Release Pipelines</h3>
+                    <p>Automate build releases using GitHub Actions for automatic ZIP packaging and dynamic version tracking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Quick Start -->
+    <section id="quickstart" class="section bg-alt">
+        <div class="container">
+            <h2 class="section-title">Quick Start Guide</h2>
+            
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab(event, 'tab-init')">1. Initialize</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-test')">2. Test Connection</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-status')">3. Inspect Diff</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-push')">4. Push & Sync</button>
+                </div>
+
+                <div id="tab-init" class="tab-content active">
+                    <h3>Initialize Configuration</h3>
+                    <p>Initialize workspace config using preset target or custom arguments:</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code># Initialize using built-in target preset
+gftp init --preset
+
+# Or initialize with custom FTP credentials
+gftp init --host ftpupload.net --user myuser --pass mysecret --remote-dir /htdocs</code></pre>
+                    </div>
+                </div>
+
+                <div id="tab-test" class="tab-content">
+                    <h3>Test FTP Server Connection</h3>
+                    <p>Validate FTP connection, authentication, and directory write access:</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>gftp test</code></pre>
+                    </div>
+                </div>
+
+                <div id="tab-status" class="tab-content">
+                    <h3>Check Pending Changes</h3>
+                    <p>View files that have been modified or added since your last sync:</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code>gftp status</code></pre>
+                    </div>
+                </div>
+
+                <div id="tab-push" class="tab-content">
+                    <h3>Execute Differential Sync</h3>
+                    <p>Upload modified files with live transfer progress bars:</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        <pre><code># Dry-run preview
+gftp push --dry-run
+
+# Real differential push
+gftp push</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Command Reference Matrix -->
+    <section id="cli-reference" class="section">
+        <div class="container">
+            <h2 class="section-title">CLI Command Reference</h2>
+            <table class="cmd-table">
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Arguments</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>gftp init</code></td>
+                        <td><code>--preset</code> or <code>--host</code> <code>--user</code></td>
+                        <td>Initialize <code>.gftp/config</code> and default <code>.gftpignore</code> file</td>
+                    </tr>
+                    <tr>
+                        <td><code>gftp config</code></td>
+                        <td><code>show</code> or <code>set &lt;key&gt; &lt;val&gt;</code></td>
+                        <td>View or update configuration settings dynamically</td>
+                    </tr>
+                    <tr>
+                        <td><code>gftp test</code></td>
+                        <td>None</td>
+                        <td>Verify FTP server connection, authentication, and directory access</td>
+                    </tr>
+                    <tr>
+                        <td><code>gftp status</code></td>
+                        <td>None</td>
+                        <td>Compare local git HEAD against remote commit state SHA</td>
+                    </tr>
+                    <tr>
+                        <td><code>gftp push</code></td>
+                        <td><code>--dry-run</code>, <code>--force</code>, <code>--all</code></td>
+                        <td>Upload modified files and update remote commit state SHA</td>
+                    </tr>
+                    <tr>
+                        <td><code>gftp sync</code></td>
+                        <td>Same as push</td>
+                        <td>Alias for <code>gftp push</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>gftp log</code></td>
+                        <td>None</td>
+                        <td>Display historical synchronization transfer logs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 <strong>gftp Project</strong>. Open-source under MIT License.</p>
+            <p><a href="https://github.com/sabbir28/gftp" target="_blank">View on GitHub</a> | Built with C++17 for Windows</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

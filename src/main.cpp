@@ -13,6 +13,14 @@
 
 namespace fs = std::filesystem;
 
+#ifndef GFTP_BUILD_NUMBER
+#define GFTP_BUILD_NUMBER "1.0.0-dev"
+#endif
+
+#ifndef GFTP_BUILD_DATE
+#define GFTP_BUILD_DATE __DATE__
+#endif
+
 void printUsage() {
     UI::printBanner();
     std::cout << UI::BOLD << "USAGE:" << UI::RESET << "\n";
@@ -31,7 +39,7 @@ void printUsage() {
     std::cout << "                       --all / --force (Upload all tracked files regardless of SHA)\n";
     std::cout << "  " << UI::CYAN << "sync" << UI::RESET << "       Alias for 'push'\n";
     std::cout << "  " << UI::CYAN << "log" << UI::RESET << "        View sync history\n";
-    std::cout << "  " << UI::CYAN << "version" << UI::RESET << "    Display version information\n";
+    std::cout << "  " << UI::CYAN << "version" << UI::RESET << "    Display version & build information\n";
     std::cout << "  " << UI::CYAN << "help" << UI::RESET << "       Show this help message\n\n";
 
     std::cout << UI::BOLD << "EXAMPLES:" << UI::RESET << "\n";
@@ -57,7 +65,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (cmd == "version" || cmd == "-v" || cmd == "--version") {
-        std::cout << UI::CYAN << "gftp version 1.0.0 (Windows Native C++ WinINet Engine)" << UI::RESET << "\n";
+        std::cout << UI::CYAN << "gftp version " << GFTP_BUILD_NUMBER << " (Built: " << GFTP_BUILD_DATE << ", Windows Native C++ WinINet Engine)" << UI::RESET << "\n";
         return 0;
     }
 
